@@ -5,7 +5,9 @@ enum command {
     GET,
     SET,
     PUB,
-    SUB
+    SUB,
+    DBG=0xff    // If first byte is this, the rest of the packet is
+                // Length, then a debug message string.
 };
 
 struct msg {
