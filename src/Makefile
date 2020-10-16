@@ -6,7 +6,7 @@ BINS=msg
 
 all:	$(BINS)
 
-msg:	msg.c
+msg:	msg.c msg.h
 	$(CC) $(CFLAGS) msg.c -o msg
 
 
