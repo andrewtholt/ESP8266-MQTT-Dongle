@@ -2,3 +2,4 @@ src
 *.o
 cscope.out
 msg
+main

@@ -16,3 +16,5 @@ struct msg {
     char val[256];
 };
 
+uint8_t structToMsg(struct msg *in, uint8_t *buffer);
+struct msg *msgToStruct( struct msg *in, uint8_t *msg);
