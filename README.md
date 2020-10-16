@@ -1,1 +1,1 @@
-# ESP8266-MQTT-Dongle
+# ESP8266 MQTT Dongle
