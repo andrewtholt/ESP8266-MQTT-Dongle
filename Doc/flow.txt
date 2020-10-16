@@ -1,0 +1,116 @@
+@startuml
+
+start
+partition "Initialise" { 
+:set WIFI_CONNECT to false
+set WIFI_CONNECTED to false
+set MQTT_CONNECT to false
+set MQTT_CONNECTED to false
+set AUTO_CONNECT to false
+set WIFI_SSID to ""
+set WIFI_PASSWD to ""
+set MQTT_HOST to localhost
+set MQTT_PORT 1883
+set COMMAND_LOOP true
+set LISTEN to false
+set SLEEP to 0
+set ERROR to OK;
+:setup GPIO0 as an input and IRQ;
+}
+repeat
+repeat
+partition "Get Command" { 
+repeat
+    :Get command;
+backward: Issue error message;
+repeat while (Valid Command ?) is (no)
+}
+if (command is SLEEP) then (yes)
+partition "Sleep" { 
+    :Sleep;
+    stop
+}
+elseif (command is WIFI_CONNECT ) then (yes)
+
+partition "Connect" {
+    if (already connected) then (no)
+        :Get ESSID and PASSWD;
+        :connect;
+    
+        if (connected) then (yes)
+            :Issue OK message;
+            :Set WIFI_CONNECTED to true;
+        else (no)
+            :Issue Error message;
+            :Set WIFI_CONNECTED to false;
+        endif
+    else (yes)
+        :Issue OK message;
+    endif
+}
+endif
+
+if (WIFI_CONNECTED) then (true)
+    if (command is LISTEN ) then (yes)
+    partition Listen {
+        :set PORT ;
+        :set LISTEN to true;
+        :set COMMAND_LOOP to false;
+        }
+    elseif (command is CONNECT ) then (yes)
+    partition Connect {
+        :set HOST;
+        :set CONNECT to true;
+        :set COMMAND_LOOP to false;
+    }
+    elseif (command is WIFI_DISCONNECT ) then (yes)
+    partition WiFi_Disconnect {
+        :Disconnect from WiFi;
+        :set WIFI_CONNECTED false;
+    }
+    else
+        :Issue Error message;
+    endif
+else (false)
+endif
+
+repeat while (COMMAND_LOOP)  is (true)
+
+if (LISTEN) then (true)
+partition Listening {
+    :Listen on PORT;
+    repeat
+        :poll PORT and serial;
+
+        if (From PORT ) then (yes)
+            :Read data from PORT;
+            :Send to serial;
+        elseif (From serial ) then (yes)
+            :Read data from serial;
+            :Send to PORT;
+        endif
+    repeat while (connected) is (yes)
+    :set LISTEN to false;
+}
+elseif (CONNECT) then (true)
+partition Connected {
+    :Connect to HOST on PORT;
+    repeat
+        :poll PORT and serial;
+        if (From PORT ) then (yes)
+            :Read data from PORT;
+            :Send to serial;
+        elseif (From serial ) then (yes)
+            :Read data from serial;
+            :Send to PORT;
+        endif
+    repeat while (connected) is (yes)
+    :set CONNECT to false;
+}
+endif
+:send disconnected message to serial port;
+
+repeat while (forever)  is (true)
+
+stop
+@enduml

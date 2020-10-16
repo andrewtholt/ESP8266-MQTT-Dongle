@@ -1,0 +1,124 @@
+@startuml
+
+start
+partition "Initialise" { 
+
+
+    :set WIFI_SSID to "SSID"
+    set WIFI_PASSWD to "PASSWD"
+
+    set MQTT_HOST to localhost
+    set MQTT_PORT 1883
+
+    set AUTO_CONNECT to false
+    set SLEEP to 0
+    set AUTO_SAVE to false
+    set CONFIGURED true
+    ;
+    floating note left: These are saved to file.
+    
+    :
+    set WIFI_CONNECT to false
+    set WIFI_CONNECTED to false
+    set MQTT_CONNECT to false
+    set MQTT_CONNECTED to false
+    set CFG_CHANGED to false
+    set SAVE to false
+    ;
+    floating note left: These are\nnot saved to file.
+
+    
+
+    ' set ERROR to OK
+    ' set COMMAND_LOOP true
+'    set LISTEN to false;
+    :set CMD_WAIT 10;
+    floating note left : Time to wait\nfor command.
+    ' :setup GPIO0 as an input and IRQ;
+
+    if (config file exists ?)  then (true)
+        :load settings from file;
+        :set CONFIGURED true;
+    else
+        :save settings to file;
+        :set CONFIGURED false;
+    endif
+}
+
+partition "Parse" { 
+repeat
+    :create command error message;
+    :Get Command;
+    floating note left: Wait for CMD_WAIT milliseconds\nfor a message.\n-1 means wait forever.
+    if (command waiting?) then (true)
+    if (Command SET) then (yes)
+        partition "Set" {
+        :Get name;
+        :Get value;
+        :set local value;
+        if (AUTOSAVE) then (true)
+            :save settings to file;
+        else (false)
+            :set CFG_CHANGED to true;
+        endif
+        :make success message;
+        }
+    elseif (Command GET) then (yes)
+        partition "Get" {
+        :Get name;
+        :lookup value;
+        if (value found ?) then (yes) 
+            :make message;
+        else (no)
+            :make error message;
+        endif
+        }
+    elseif (Command PUB) then (yes)
+        partition "Pub" {
+        if (WIFI_CONNECTED and MQTT_CONNECTED) then (true)
+            :Get topic;
+            :Get msg;
+            :MQTT publish;
+            :make success message;
+        else (false)
+            :make not_connected error message;
+        endif
+        }
+    elseif (Command SUB) then (yes)
+        partition "Sub" {
+            if (WIFI_CONNECTED and MQTT_CONNECTED) then (true)
+                :Get topic;
+                :MQTT subscribe;
+                :make success message;
+
+            else (false)
+                :make not_connected error message;
+            endif
+        }
+    endif
+    :send message to host;
+    else (false)
+
+        partition "Update Config File" {
+        if (CFG_CHANGED and AUTO_SAVE) then (true)
+            :save config to file;
+            :set CFG_CHANGED to false;
+        endif 
+        }
+
+        partition "Nap" {
+        if (SLEEP > 0) then (true)
+            :make sleep message;
+            :send message;
+            :sleep for SLEEP milliseconds;
+            :make awake message;
+            :send message;
+        endif
+        }
+    endif
+repeat while (OK) is (true)
+->no
+}
+stop
+
+@enduml
