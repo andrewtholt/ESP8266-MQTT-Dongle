@@ -1,0 +1,30 @@
+@startuml
+
+start
+:
+set MQTT_CONNECT to false
+set MQTT_CONNECTED to false
+;
+
+if (WIFI_CONNECTED) then(true)
+    if (MQTT_HOST empty or MQTT_PORT is 0) then (false)
+        :MQTT connect to MQTT_HOST
+        on MQTT_PORT;
+
+        if(success) then (true)
+            :set MQTT_CONNECTED true;
+        else(false)
+            :set MQTT_CONNECTED false;
+        endif
+        
+    else(true)
+        :queue
+        general error;
+    endif
+else(false)
+    :queue
+    not connected error;
+endif
+
+end
+@enduml
