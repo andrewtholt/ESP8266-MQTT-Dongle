@@ -17,6 +17,7 @@ if (WIFI_CONNECTED) then(true)
             :set MQTT_CONNECTED false;
         endif
         
+        :queue\nMQTT_CONNECTED;
     else(true)
         :queue
         general error;

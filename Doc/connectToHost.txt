@@ -2,7 +2,7 @@
 
 start
 
-if( WIFI_CONNECTED is true) then(true)
+if( WIFI_CONNECTED) then(true)
     if (HOST_PORT is 0 or HOST_IP is "0.0.0.0") then (false)
         :connect to HOST_IP on HOST_PORT;
         if (success) then (true)
