@@ -11,7 +11,7 @@ if (WIFI_SSID empty or WIFI_PASSWD empty) then (false)
     :connect to WiFi;
     if( connected ) then (true)
         :set WIFI_CONNECTED to true;
-        :queue Connected to AP;
+        :queue\nConnected to AP;
         if (HOST_PORT is 0 or HOST_IP is "0.0.0.0") then (false)
             :connect to HOST_IP on HOST_PORT;
             if (success) then (true)
