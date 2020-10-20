@@ -21,5 +21,19 @@ struct msg {
     char val[MSG_LEN];
 };
 
+/*
 uint8_t structToMsg(struct msg *in, uint8_t *buffer);
 struct msg *msgToStruct( struct msg *in, uint8_t *msg);
+*/
+
+// 
+// All roles will need an implementation of these
+// One on the esp01 and
+// One on each client.
+//
+uint8_t get(char *name, char *value);   // Return status and Get local variable value into pointer.
+uint8_t set(char *name, char *value);   // Set local value returning status.
+
+uint8_t pub(char *topic, char *msg);
+uint8_t sub(char *topic);
+
