@@ -31,14 +31,33 @@ void setup() {
 }
 
 void loop() {
+    char buffer[255];
+
+
     digitalWrite(LED_BUILTIN,LOW);
 
-    Serial.println("LED Off");
+    memset((void *)buffer,0,sizeof(buffer));
+    buffer[0] = '*';
+    buffer[1] = 0xff;
+    buffer[2] = 7;
+
+    strcpy(&buffer[3],"LED OFF");
+
+    Serial.println( buffer );
+//    Serial.println("LED Off");
 
     delay(500);
 
-    Serial.println("LED On");
     digitalWrite(LED_BUILTIN,HIGH);
+
+    memset((void *)buffer,0,sizeof(buffer));
+    buffer[0] = '*';
+    buffer[1] = 0xff;
+    buffer[2] = 6;
+
+    strcpy(&buffer[3],"LED ON");
+//    Serial.println("LED On");
+    Serial.println( buffer );
 
     delay(500);
 }
