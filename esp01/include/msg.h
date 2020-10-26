@@ -38,4 +38,4 @@ uint8_t pub(char *topic, char *msg);
 uint8_t sub(char *topic);
 
 void dbgMsg(char *out, char *msg);
-
+void msgToStruct( struct msg *in, uint8_t *msg);

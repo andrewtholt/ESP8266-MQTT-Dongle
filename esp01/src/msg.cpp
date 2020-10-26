@@ -48,7 +48,7 @@ uint8_t structToMsg(struct msg *in, uint8_t *buffer) {
 
 }
 
-struct msg *msgToStruct( struct msg *in, uint8_t *msg) {
+void msgToStruct( struct msg *in, uint8_t *msg) {
     uint8_t offset = 0;
 
     memset((void *)in,0,sizeof(struct msg));

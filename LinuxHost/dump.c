@@ -43,37 +43,17 @@ int main() {
 #endif
 
         } while (blk==true) ;
-        bzero(buffer,sizeof(buffer));
 
         uint8_t soh;
         r = read(fd, &soh, 1);
-        printf("soh=0x%02x\n", soh);
+        printf("soh=0x%02x", soh);
 
-        uint8_t len=0;
-        if( soh == '*') {
-            uint8_t cmd;
-            r = read(fd, &len, 1);
-            printf("\tPacket len=%d\n", len);
-
-            r = read(fd, &cmd, 1);
-            len++;
-            printf("cmd=0x%02x\n", cmd);
-
-            //            if( cmd == 0xff) {
-            switch(cmd) {
-                case DBG:
-                    {
-                        uint8_t len ;
-
-                        printf("\tcmd is DBG\n");
-                        r = read(fd, &len, 1);
-                        printf("dbg len=%02d\n", len);
-                        r = read(fd, buffer, len);
-                        printf("%s\n", buffer);
-                        break;
-                    }
-            }
-        } 
+        if (soh == '*') {
+            printf("  <==== start\n");
+        } else {
+        r = read(fd, &soh, 1);
+        printf("soh=0x%02x", soh);
+            printf("\n");
         }
     }
-
+}

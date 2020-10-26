@@ -6,12 +6,12 @@ partition "Initialise" {
 
     :
     set WIFI_SSID to "SSID"
-    set TCP_PORT to 0
+    set HOST_PORT to 0
     set HOST_IP to "0.0.0.0"
     set WIFI_PASSWD to "PASSWD"
     ;
     note left 
-    If TCP_PORT is a valid TCP/IP 
+    If HOST_PORT is a valid TCP/IP 
     port then setting:
     WIFI_SSID, WIFI_PASSWD, HOST_IP and
     then WIFI_CONNECT to true will connect 
@@ -24,7 +24,7 @@ partition "Initialise" {
     ;
 
     :
-    set AUTO_CONNECT to false
+    set AUTO_CONNECT to OFF
     set SLEEP to 0
     set AUTO_SAVE to false
     set CONFIGURED true

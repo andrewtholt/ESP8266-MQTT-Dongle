@@ -1,7 +1,13 @@
 #include "Arduino.h"
 #include <LittleFS.h>
+#include "kvs.h"
+#include "msg.h"
+
+KVSstore *store;
 
 void setup() {
+    store = kvs_create(strcmp);
+
     pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
 
@@ -13,6 +19,7 @@ void setup() {
     fileSystem->setConfig(fileSystemConfig);
     fileSystem->begin();
 
+    kvs_put(store, "abc", (KVSvalue *)"123");
     delay(5000);
 
     if( LittleFS.exists("/test.txt")) {
@@ -31,18 +38,27 @@ void setup() {
 }
 
 void loop() {
-    char buffer[255];
 
+    uint8_t len=0;
+    char buffer[255];
 
     digitalWrite(LED_BUILTIN,LOW);
 
+    dbgMsg(buffer,(char *)"TESTING");
+
     memset((void *)buffer,0,sizeof(buffer));
     buffer[0] = '*';
-    buffer[1] = 0xff;
-    buffer[2] = 7;
+    buffer[1] = 0x00; // packet length
+    buffer[2] = 0xff;
+    buffer[3] = 7;
 
-    strcpy(&buffer[3],"LED OFF");
+    len=4;
 
+    strcpy(&buffer[4],"LED OFF");
+
+    len += strlen(&buffer[4]);
+
+    buffer[1] = len;
     Serial.println( buffer );
 //    Serial.println("LED Off");
 
@@ -52,12 +68,18 @@ void loop() {
 
     memset((void *)buffer,0,sizeof(buffer));
     buffer[0] = '*';
-    buffer[1] = 0xff;
-    buffer[2] = 6;
+    buffer[1] = 0x00; // packet length
+    buffer[2] = 0xff;
+    buffer[3] = 6;
 
-    strcpy(&buffer[3],"LED ON");
-//    Serial.println("LED On");
+    len=4;
+
+    strcpy(&buffer[4],"LED ON");
+    len += strlen(&buffer[4]);
+    buffer[1] = len;
     Serial.println( buffer );
+
+//    Serial.println("LED On");
 
     delay(500);
 }
