@@ -16,7 +16,6 @@ requires nvs.fth
 
 : get-tst
     ." Get some data ..." cr
-\    db s" TEST" buffer 32 db-get abort" ... failed"
     db s" TEST" value-buffer db-get abort" ... failed"
     ." ... done" cr
 

@@ -17,7 +17,7 @@ db-buffer /db-buffer 2constant value-buffer
         -1 to db-init-run
     then
 ;
-: (get) { name nlen val vlen -- }
+: (db-get) { name nlen val vlen -- }
 
     db-init-run 0= abort" Init not run"
 
@@ -26,7 +26,7 @@ db-buffer /db-buffer 2constant value-buffer
     name nlen val vlen db-get
 ;
 
-: (set) { name nlen val vlen -- }
+: (db-set) { name nlen val vlen -- }
     db-init-run 0= abort" Init not run"
 
     db
@@ -34,21 +34,21 @@ db-buffer /db-buffer 2constant value-buffer
     db-put
 ;
 
-: get
+: nvs-get
     safe-parse-word \ db Name len
     value-buffer
 
-    (get) 0= if
+    (db-get) 0= if
         db-buffer count type cr
     else
         ." Not found" cr
     then
 ;
 
-: set
+: nvs-set
     safe-parse-word
     safe-parse-word
-    (set) 0<> if
+    (db-set) 0<> if
         ." Failed" cr
     then
 ;
