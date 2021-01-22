@@ -73,11 +73,10 @@
 true constant TEST
 
 TEST [if]
-variable fred
 ' get-act ' set-act mk-active-boolean ted
 
 cmd-get ted 
-1 cmd-set ted fred
+1 cmd-set ted
 cmd-get ted 
 [then]
 
