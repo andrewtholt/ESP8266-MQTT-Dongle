@@ -101,9 +101,11 @@ repeat
     elseif (Command SUB) then (yes)
         partition "Sub" {
             if (WIFI_CONNECTED and MQTT_CONNECTED) then (true)
+                :Get local name;
                 :Get topic;
                 :MQTT subscribe;
                 :make success message;
+                :make map entry topic to local name;
 
             else (false)
                 :make not_connected error message;
