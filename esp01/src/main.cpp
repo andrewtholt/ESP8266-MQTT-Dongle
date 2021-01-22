@@ -8,7 +8,9 @@ KVSstore *store;
 void setup() {
     store = kvs_create(strcmp);
 
-    pinMode(LED_BUILTIN, OUTPUT);
+//    pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(2, OUTPUT);
+
     Serial.begin(115200);
 
     FS* fileSystem = &LittleFS;
@@ -42,7 +44,8 @@ void loop() {
     uint8_t len=0;
     char buffer[255];
 
-    digitalWrite(LED_BUILTIN,LOW);
+//    digitalWrite(LED_BUILTIN,LOW);
+    digitalWrite(2,LOW);
 
     dbgMsg(buffer,(char *)"TESTING");
 
@@ -64,7 +67,8 @@ void loop() {
 
     delay(500);
 
-    digitalWrite(LED_BUILTIN,HIGH);
+//    digitalWrite(LED_BUILTIN,HIGH);
+    digitalWrite(2,HIGH);
 
     memset((void *)buffer,0,sizeof(buffer));
     buffer[0] = '*';
