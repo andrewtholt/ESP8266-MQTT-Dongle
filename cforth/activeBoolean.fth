@@ -22,23 +22,13 @@
     \
     \ Stack : <cmd> <addr of value>
     \
-            .s cr
     swap
     case
         cmd-set of
-            \
-            \ First save the value.
-            \ Stack: <addr>
-            safe-parse-word $find
-            if
-                execute
-                over !
-            then
-            \
+            \ 
             \ Now if the set action is non zero execute it.
-            \
+            \ 
             dup cell+ @ ?dup if
-                swap @ swap
                 execute
             else
                 drop
@@ -65,15 +55,14 @@
 
 : set-act
     ." SET Action" cr
-\     ." TOS is " . cr
+    .s cr
+
     !
+    
 ;
 
 : get-act
 \    ." GET Action" cr
-\    ." TOS is " . cr
-
-
     if
         ." TRUE" cr
     else
