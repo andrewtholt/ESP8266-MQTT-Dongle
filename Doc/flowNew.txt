@@ -113,6 +113,13 @@ repeat
         partition "Unsub" {
             :TODO;
         }
+    elseif (Command SAVE) then (yes)
+        partition "Save" {
+            if (CFG_CHANGED) then (true)
+                :save settings to file;
+                :set CFG_CHANGED to true;
+            endif
+        }
     elseif (Command unknown) then (yes)
         partition "Unknown" {
             :make error message;
