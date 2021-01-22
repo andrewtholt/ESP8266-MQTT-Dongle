@@ -1,5 +1,4 @@
 
-variable db
 0 value db-init-run
 
 32 constant /db-buffer
@@ -10,7 +9,7 @@ db-buffer /db-buffer 2constant value-buffer
 : db-init
     db-init-run 0= if
         ." Open db ..." cr
-        db s" settings" db-open abort" ...  failed"
+        s" settings" db-open abort" ...  failed"
 
         ." ... done" cr
         value-buffer erase
@@ -22,14 +21,12 @@ db-buffer /db-buffer 2constant value-buffer
     db-init-run 0= abort" Init not run"
 
     val vlen erase
-    db
     name nlen val vlen db-get
 ;
 
 : (db-set) { name nlen val vlen -- }
     db-init-run 0= abort" Init not run"
 
-    db
     name nlen val vlen
     db-put
 ;
@@ -56,7 +53,5 @@ db-buffer /db-buffer 2constant value-buffer
 : .value
     db-buffer count type
 ;
-
-
 
 
