@@ -54,7 +54,6 @@ struct msg *msgToStruct( struct msg *in, uint8_t *msg) {
     memset((void *)in,0,sizeof(struct msg));
 
     in->cmd = msg[offset++];
-//    uint8_t msgLen = msg[offset++];
 
     in->keyLen = msg[offset++];
     memcpy( in->key, &msg[offset], in->keyLen);

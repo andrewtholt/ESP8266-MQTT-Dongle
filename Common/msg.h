@@ -2,6 +2,7 @@
 
 #define TOPIC_LEN 64
 #define MSG_LEN 64
+#define PACKET_LEN 255
 
 enum command {
     NOP=0,
@@ -20,6 +21,14 @@ struct msg {
     uint8_t valLen;
     char val[MSG_LEN];
 };
+
+struct dbgMsg {
+    uint8_t cmd;
+    uint8_t dbgLen;
+
+    uint8_t msg[PACKET_LEN - (sizeof(uint8_t) * 2)];  // the packet len - the 2 uint8_t values.
+};
+
 
 /*
 uint8_t structToMsg(struct msg *in, uint8_t *buffer);
