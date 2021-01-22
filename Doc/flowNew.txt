@@ -53,7 +53,7 @@ partition "Initialise" {
     if (config file exists ?)  then (true)
         :load settings from file;
         :set CONFIGURED true;
-    else
+    else (false)
         :save settings to file;
         :set CONFIGURED false;
     endif
@@ -82,7 +82,7 @@ repeat
         :Get name;
         :lookup value;
         if (value found ?) then (yes) 
-            :make message;
+            :make set message;
         else (no)
             :make error message;
         endif
@@ -109,6 +109,14 @@ repeat
                 :make not_connected error message;
             endif
         }
+    elseif (Command UNSUB) then (yes)
+        partition "Unsub" {
+            :TODO;
+        }
+    elseif (Command unknown) then (yes)
+        partition "Unknown" {
+            :make error message;
+        }
     endif
     :send message to host;
     else (false)
@@ -117,6 +125,7 @@ repeat
         if (CFG_CHANGED and AUTO_SAVE) then (true)
             :save config to file;
             :set CFG_CHANGED to false;
+        else (false)
         endif 
         }
 
@@ -127,6 +136,7 @@ repeat
             :sleep for SLEEP milliseconds;
             :make awake message;
             :send message;
+        else (false)
         endif
         }
     endif
