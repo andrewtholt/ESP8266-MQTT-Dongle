@@ -1,6 +1,2 @@
-src
 *.o
-cscope.out
-msg
-main
 tst
