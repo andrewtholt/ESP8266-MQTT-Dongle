@@ -8,8 +8,7 @@
 // Create a debug message.
 // The out buffer must be large enough to hold it.
 //
-void dbgMsg(char *out, char *msg) {
-
+void dbgMsg( char *msg, char *out) {
     uint8_t msgLen = strlen(msg);
 
     memset(out,0,msgLen + 5);

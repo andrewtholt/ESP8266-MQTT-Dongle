@@ -46,5 +46,6 @@ uint8_t set(char *name, char *value);   // Set local value returning status.
 uint8_t pub(char *topic, char *msg);
 uint8_t sub(char *topic);
 
-void dbgMsg(char *out, char *msg);
+void dbgMsg( char *msg, char *out);     // Pointer to the message you want to send,
+                                        // and a buffer to put the result in
 
