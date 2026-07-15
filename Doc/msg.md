@@ -73,12 +73,16 @@ CONNECTED
     0 means don't sleep.
     Default is 0.
 
-CMD_WAIT
+**CMD_WAIT**
     Wait for a command for CMD_WAIT ms.
     If 0 don't wait.
     If -1 wait for ever.
     Defaul is 10.
-    
+
+
+
+
+
 
 
 

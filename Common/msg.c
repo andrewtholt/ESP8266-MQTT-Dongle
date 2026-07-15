@@ -119,7 +119,7 @@ struct msg *msgToStruct( struct msg *in, uint8_t *msg) {
     memcpy( in->key, &msg[offset], in->keyLen);
     offset += in->keyLen;
 
-    // Only SE and PUB have a value.
+    // Only SET and PUB have a value.
     //
     if (in->cmd == SET || in->cmd == PUB) {
         in->valLen = msg[offset++];
